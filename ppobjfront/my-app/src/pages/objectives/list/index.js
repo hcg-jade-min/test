@@ -6,7 +6,7 @@ class ObjectiveList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      number: 0,
+      data: [],
     }
   };
 
@@ -14,11 +14,12 @@ class ObjectiveList extends React.Component {
     let getObjectives = () => {
         axios({
           method:'get',
-          url:'localhost:4000/api/v1/objectives',
+          url:'http://localhost:4000/api/v1/objectives',
         })
         .then(response => {
           console.log(response.data)
-          this.props.onReceive(response.data);
+          this.setState({data: response.data})
+          console.log(this.state.data[0].id)
         });
     }
 
@@ -50,7 +51,8 @@ class ObjectiveList extends React.Component {
   render() {
     return (
       <div>
-        <h2>{this.state.number}</h2>
+        <h1>{this.state.data.length == 0 ? 'abcabc' : this.state.data[0].name}</h1>
+        {/* <h2>{this.this.state this.state.number}</h2> */}
         <button onClick={() => this.handleIncreaseButtonClick()}>Increase</button>
         <button onClick={() => this.handleDecreaseButtonClick()}>Decrease</button>
         <button onClick={() => this.handleMultiplyButtonClick()}>Multiply</button>
