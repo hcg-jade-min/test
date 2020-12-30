@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_062222) do
+ActiveRecord::Schema.define(version: 2020_12_30_053409) do
 
   create_table "key_results", force: :cascade do |t|
     t.string "name"
@@ -23,6 +23,11 @@ ActiveRecord::Schema.define(version: 2020_12_28_062222) do
     t.index ["objective_id"], name: "index_key_results_on_objective_id"
   end
 
+  create_table "obj_joins", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "objectives", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -30,6 +35,13 @@ ActiveRecord::Schema.define(version: 2020_12_28_062222) do
     t.date "ended_on"
     t.integer "status"
     t.integer "achievement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

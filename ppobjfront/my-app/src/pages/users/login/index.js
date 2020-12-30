@@ -2,9 +2,7 @@ import React from "react";
 import axios from 'axios';
 // import IndexList from "../../../containers/IndexList";
 
-const api_uri = 'http://localhost:4000/api/v1/objectives'
-
-class ObjectiveList extends React.Component {
+class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,10 +11,10 @@ class ObjectiveList extends React.Component {
   };
 
   componentDidMount() {
-    let getObjectives = () => {
+    let getUsers = () => {
         axios({
           method:'get',
-          url: api_uri,
+          url:'http://localhost:4000/api/v1/users',
         })
         .then(response => {
           console.log(response.data)
@@ -25,13 +23,19 @@ class ObjectiveList extends React.Component {
         });
     }
 
-    getObjectives();
+    getUsers();
 
 }
 
   render() {
     return (
       <div>
+          <h1>locallhost:3000/users</h1>
+          <form action="http://localhost:4000/api/v1/users/login" method="POST">
+            ID : <input type="text"></input><br></br>
+            PW : <input type="password"></input><br></br>
+            <input type="submit" value="Login"></input>
+          </form>
         <h1>{this.state.data.length == 0 ? 'abcabc' : this.state.data[0].name}</h1>
         {/* <h2>{this.this.state this.state.number}</h2> */}
       </div>
@@ -39,4 +43,4 @@ class ObjectiveList extends React.Component {
   };
 }
 
-export default ObjectiveList;
+export default UserList;

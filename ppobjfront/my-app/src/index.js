@@ -14,6 +14,7 @@ class App extends React.Component {
             <Route path="/objectives/new" component={Pages.Objectives.New} />
             <Route path="/objectives/edit" component={Pages.Objectives.New} />
             <Route path="/objectives/:objective_id" component={Pages.Objectives.Show} />
+            <Route path="/users" component={Pages.Users.Login} />
           </Switch>
         </BrowserRouter>
       </div>
