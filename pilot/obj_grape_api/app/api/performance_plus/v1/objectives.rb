@@ -7,14 +7,27 @@ module PerformancePlus
 
       # Objective : index - 모든 목표의 리스트
       resource :objectives do
-        desc 'Return list of objectives'
+        desc '목표 목록 리턴' do
+          success PerformancePlus::Entities::Objective
+          failure [
+            { code: 400, message: 'Bad request', model: PerformancePlus::Entities::ApiError },
+            { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+          ]
+          is_array true
+        end
         get do
           objectives = Objective.all
           present objectives
         end
         ###
         # Objective : show - 특정한 목표
-        desc 'Return a specific objective'
+        desc '목표 상세 정보 리턴' do
+          success PerformancePlus::Entities::Objective
+          failure [
+            { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+            { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+          ]
+        end
         route_param :id do
           get do
             objective = Objective.find(params[:id])
@@ -23,7 +36,13 @@ module PerformancePlus
         end
         ###
         # Objective : create - 새로운 목표 생성
-        desc 'Create New Objective'
+        desc '새로운 목표 생성' do
+          success PerformancePlus::Entities::Objective
+          failure [
+            { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+            { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+          ]
+        end
         params do
           requires :objective, type: Hash do
             requires :name, type: String, desc: 'Name Of New Objective'
@@ -39,7 +58,13 @@ module PerformancePlus
         end
         ###
         # Objective : update - 목표 수정하기
-        desc 'Update A Specific Objective'
+        desc '목표 정보 수정하기' do
+          success PerformancePlus::Entities::Objective
+          failure [
+            { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+            { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+          ]
+        end
         route_param :id do
           params do
             requires :objective, type: Hash do
@@ -58,16 +83,22 @@ module PerformancePlus
         end
         ###
         # Objective : delete - 목표 삭제하기
-        desc 'Delete A Specific Objective'
-        route_param :id do
-          delete do
-            @objective = Objective.find(params[:id])
-            @objective.destroy
-          end
-        end
+        # desc 'Delete A Specific Objective'
+        # route_param :id do
+        #   delete do
+        #     @objective = Objective.find(params[:id])
+        #     @objective.destroy
+        #   end
+        # end
         # KeyResult : create - 새로운 핵심 성과 생성
         resource :key_results do
-          desc 'Create a key_results.'
+          desc '새로운 핵심 성과 생성' do
+            success PerformancePlus::Entities::Objective
+            failure [
+              { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+              { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+            ]
+          end
           params do
             requires :key_result, type: Hash do
               requires :name, type: String, desc: 'New Key_result.'
