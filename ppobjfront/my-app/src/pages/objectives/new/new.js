@@ -2,18 +2,19 @@ import React from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
-const api_uri = 'http://localhost:4000/api/v1/objectives'
+const objective_api_uri = 'http://localhost:4000/api/v1/objectives'
 
 class ObjectiveNew extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      description: "",
+      objective_name: "",
+      objective_description: "",
       started_on: "",
       ended_on: "",
-      status: "",
-      achievement: ""
+      kr_name: "",
+      kr_description: "",
+      kr_manage_style: ""
     }
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleValueChange = this.handleValueChange.bind(this)
@@ -32,15 +33,13 @@ class ObjectiveNew extends React.Component {
   }
 
   createObjective() {
-    const { name, description, started_on, ended_on, status, achievement } = this.state;
+    const { objective_name, objective_description, started_on, ended_on } = this.state;
     const data = {
       objective: {
-        name,
-        description,
+        objective_name,
+        objective_description,
         started_on,
-        ended_on,
-        status,
-        achievement
+        ended_on
       }
     }
 
@@ -48,18 +47,16 @@ class ObjectiveNew extends React.Component {
       method:'post',
       headers: { 'content-type': 'application/json' },
       data: data,
-      url: api_uri,
+      url: objective_api_uri,
     })
     .then((response) => {
       console.log("됐나")
       console.log(response.data)
       this.setState({
-        name: response.data.name,
-        description: response.data.description,
+        objective_name: response.data.objective_name,
+        objective_description: response.data.objective_description,
         started_on: response.data.started_on,
-        ended_on: response.data.ended_on,
-        status: response.data.status,
-        achievement: response.data.achievement
+        ended_on: response.data.ended_on
       })
     })
     .catch((error) => {
@@ -71,14 +68,12 @@ class ObjectiveNew extends React.Component {
   render() {
     return (
       <div>
-        <h1>목표 생성하기</h1>
         <form onSubmit={this.handleFormSubmit}>
-          목표명 : <input type="text" name="name" value={this.state.name} onChange={this.handleValueChange}></input><br></br>
-          목표설명 : <input type="text" name="description"  value={this.state.description} onChange={this.handleValueChange}></input><br></br>
-          목표 시작일 : <input type="date" name="started_on"  value={this.state.started_on} onChange={this.handleValueChange}></input><br></br>
-          목표 마감일 : <input type="date" name="ended_on"  value={this.state.ended_on} onChange={this.handleValueChange}></input><br></br>
-          status : <input type="text" name="status"  value={this.state.status} onChange={this.handleValueChange}></input><br></br>
-          achievement : <input type="text" name="achievement"  value={this.state.achievement} onChange={this.handleValueChange}></input><br></br>
+          <h2>목표</h2>
+            목표명 : <input type="text" name="objective_name" value={this.state.objective_name} onChange={this.handleValueChange} /><br />
+            목표설명 : <input type="text" name="objective_description"  value={this.state.objective_description} onChange={this.handleValueChange} /><br />
+            목표 시작일 : <input type="date" name="started_on"  value={this.state.started_on} onChange={this.handleValueChange} /><br />
+            목표 마감일 : <input type="date" name="ended_on"  value={this.state.ended_on} onChange={this.handleValueChange} /><br />
           <input type="submit" value="목표 생성하기"></input>
         </form>
         <Link to="/objectives">목표 목록</Link>
