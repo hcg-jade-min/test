@@ -10,18 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_30_074635) do
+ActiveRecord::Schema.define(version: 2021_01_11_004943) do
 
-  create_table "abcs", force: :cascade do |t|
+  create_table "check_ins", force: :cascade do |t|
+    t.string "ci_status"
+    t.integer "ci_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "key_results", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.integer "manage_style"
-    t.integer "achievement"
+    t.string "kr_name"
+    t.text "kr_description"
+    t.string "kr_manage_style", default: "abstract"
+    t.integer "kr_achievement", default: 0
     t.integer "objective_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -31,15 +33,16 @@ ActiveRecord::Schema.define(version: 2020_12_30_074635) do
   create_table "obj_joins", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role"
   end
 
   create_table "objectives", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
+    t.string "objective_name"
+    t.text "objective_description"
     t.date "started_on"
     t.date "ended_on"
-    t.integer "status"
-    t.integer "achievement"
+    t.string "objective_status", default: "default"
+    t.integer "objective_achievement", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
