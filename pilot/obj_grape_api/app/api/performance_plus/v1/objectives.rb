@@ -17,7 +17,7 @@ module PerformancePlus
         end
         get do
           objectives = Objective.all
-          present objectives
+          present objectives, with: PerformancePlus::Entities::Objective
         end
         ###
         # Objective : show - 특정한 목표
@@ -45,12 +45,10 @@ module PerformancePlus
         end
         params do
           requires :objective, type: Hash do
-            requires :name, type: String, desc: 'Name Of New Objective'
-            requires :description, type: String, desc: 'Description Of New Objective'
+            requires :objective_name, type: String, desc: 'Name Of New Objective'
+            requires :objective_description, type: String, desc: 'Description Of New Objective'
             requires :started_on, type: Date, desc: "The Date Of New Objective's Start"
             requires :ended_on, type: Date, desc: "The Date Of New Objective's End"
-            requires :status, type: Integer, desc: 'Status Of Objective'
-            requires :achievement, type: Integer, desc: 'How Much Objective Going Is'
           end
         end
         post do
@@ -68,12 +66,10 @@ module PerformancePlus
         route_param :id do
           params do
             requires :objective, type: Hash do
-              requires :name, type: String, desc: 'Name Of The Specific Objective'
-              requires :description, type: String, desc: 'Description Of New Objective'
+              requires :objective_name, type: String, desc: 'Name Of The Specific Objective'
+              requires :objective_description, type: String, desc: 'Description Of New Objective'
               requires :started_on, type: Date, desc: "The Date Of New Objective's Start"
               requires :ended_on, type: Date, desc: "The Date Of New Objective's End"
-              requires :status, type: Integer, desc: 'Status Of Objective'
-              requires :achievement, type: Integer, desc: 'How Much Objective Going Is'
             end
           end
           put do
@@ -91,27 +87,68 @@ module PerformancePlus
         #   end
         # end
         # KeyResult : create - 새로운 핵심 성과 생성
-        resource :key_results do
-          desc '새로운 핵심 성과 생성' do
-            success PerformancePlus::Entities::Objective
-            failure [
-              { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
-              { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
-            ]
-          end
-          params do
-            requires :key_result, type: Hash do
-              requires :name, type: String, desc: 'New Key_result.'
-              requires :description, type: String, desc: 'Description Of The New Key_result.'
-              requires :manage_style, type: Integer, desc: 'Select The Type Of Managing Key_result'
+        route_param :id do
+          resource :key_results do
+            desc '새로운 핵심 성과 생성' do
+              success PerformancePlus::Entities::KeyResult
+              failure [
+                { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+                { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+              ]
             end
-          end
-          # KeyResult : 새로운 핵심성과 생성될 때 연관된 목표에 해당 정보 반영하기
-          post do
-            @objective = Objective.find(params[:id])
-            @key_result = KeyResult.new(params[:key_result])
-            @key_result = @objective.key_results.create!(params[:key_result])
-            @objective.update(achievement + 1)
+            params do
+              requires :key_result, type: Hash do
+                requires :kr_name, type: String, desc: 'New Key_result.'
+                requires :kr_description, type: String, desc: 'Description Of The New Key_result.'
+                requires :kr_manage_style, type: String, desc: 'Select The Type Of Managing Key_result'
+              end
+            end
+            # KeyResult : 새로운 핵심성과 생성될 때 연관된 목표에 해당 정보 반영하기
+            post do
+              @objective = Objective.find(params[:id])
+              @key_result = KeyResult.new(params[:key_result])
+              @key_result = @objective.key_result.create!(params[:key_result])
+            end
+
+            ###
+            desc '핵심 성과 상세 정보 리턴' do
+              success PerformancePlus::Entities::KeyResult
+              failure [
+                { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+                { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+              ]
+            end
+            route_param :id do
+              get do
+                @objective = Objective.find(params[:id][0])
+                @key_result = KeyResult.find(params[:id][1])
+                present @key_result, with: PerformancePlus::Entities::KeyResult
+              end
+            end
+            ###
+
+            # KeyResult : update - 핵심 성과 수정
+            route_param :id do
+              desc '핵심 성과 수정' do
+                success PerformancePlus::Entities::KeyResult
+                failure [
+                  { code: 400, message: 'Bad Request', model: PerformancePlus::Entities::ApiError },
+                  { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
+                ]
+              end
+              params do
+                requires :key_result, type: Hash do
+                  requires :kr_name, type: String, desc: 'New Key_result.'
+                  requires :kr_description, type: String, desc: 'Description Of The New Key_result.'
+                  requires :kr_manage_style, type: String, desc: 'Select The Type Of Managing Key_result'
+                end
+              end
+              put do
+                @objective = Objective.find(params[:id][0])
+                @key_result = KeyResult.find(params[:id][1])
+                @key_result = @objective.key_result.update(params[:key_result])
+              end
+            end
           end
         end
         ###
