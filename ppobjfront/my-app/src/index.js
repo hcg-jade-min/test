@@ -1,66 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
+import { Switch, BrowserRouter, Route } from "react-router-dom";
+import * as Pages from "./pages";
 
-// class Counter extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       number: 0,
-//     }
-//   };
-
-//   handleIncreaseButtonClick() {
-//     const number = this.state.number + 1;
-//     this.setState({number: number})
-//   }
-
-//   handleDecreaseButtonClick() {
-//     const number = this.state.number - 1;
-//     this.setState({number: number})
-//   }
-
-//   handleMultiplyButtonClick() {
-//     const number = this.state.number * 2;
-//     this.setState({number: number})
-//   }
-
-//   handleResetButtonClick() {
-//     const reset_number = 0
-//     const number = reset_number;
-//     this.setState({number: number})
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <h2>{this.state.number}</h2>
-//         <button onClick={() => this.handleIncreaseButtonClick()}>Increase</button>
-//         <button onClick={() => this.handleDecreaseButtonClick()}>Decrease</button>
-//         <button onClick={() => this.handleMultiplyButtonClick()}>Multiply</button>
-//         <button onClick={() => this.handleResetButtonClick()}>Reset</button>
-//       </div>
-//     );
-//   };
-// }
-
-class Index extends React.Component {
+class App extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isLogin: true
+  //   }
+  // };
   render() {
+    // const { isLogin } = this.state;
+
+    // if (isLogin === null) {
+    //   return (
+    //     <Redirect
+    //       to={{
+    //         pathname: '/users/login',
+    //       }}
+    //     />
+    //   )
+    // } else {
     return (
       <div>
-        <h1>Performance Plus - 목표</h1>
-        <h2>목표현황</h2>
-        <button>목표 생성</button>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Pages.Objectives.List} />
+            <Route exact path="/objectives" component={Pages.Objectives.List} />
+            <Route path="/objectives/new" component={Pages.Objectives.New} />
+            <Route exact path="/objectives/:objective_id" component={Pages.Objectives.Show} />
+            <Route path="/objectives/:objective_id/edit" component={Pages.Objectives.Edit} />
+            <Route path="/users/signup" component={Pages.Users.Signup} />
+            <Route path="/users/login" component={Pages.Users.Login} />
+          </Switch>
+        </BrowserRouter>
       </div>
     );
-  }
-}
-class App extends React.Component {
-  render() {
-    return (
-      <Index/>
-    );
+    // }
   }
 }
 ReactDOM.render(<App/>, document.getElementById("root"));
-/////

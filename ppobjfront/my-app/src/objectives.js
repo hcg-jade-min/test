@@ -15,7 +15,7 @@ function Objectives() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/objectives'
+          'http://localhost:4000/api/v1/objectives'
         );
         setObjectives(response.data); // 데이터는 response.data 안에 들어있습니다.
       } catch (e) {
