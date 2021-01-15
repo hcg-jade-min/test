@@ -41,6 +41,7 @@ class UserCreate extends React.Component {
       headers: { 'content-type': 'application/json' },
       data: data,
       url: objective_api_uri,
+      withCredentials: true
     })
     .then((response) => {
       console.log("됐나")
@@ -49,6 +50,7 @@ class UserCreate extends React.Component {
         username: response.data.username,
         password: response.data.password,
       })
+      alert('회원가입이 정상적으로 되었습니다.')
     })
     .catch((error) => {
       console.log("안됐네")

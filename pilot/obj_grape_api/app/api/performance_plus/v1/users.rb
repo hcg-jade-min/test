@@ -45,7 +45,7 @@ module PerformancePlus
         post do
           # @user = User.create!(params[:user])
           @user = User.new(params[:user])
-          cookies[:user_id] = @user.id if @user.save
+          cookies[:uid] = @user.id if @user.save
         end
         # User : Login - 아이디, 패스워드 맞으면 통과
         desc '유저 로그인' do
@@ -65,8 +65,14 @@ module PerformancePlus
           user = User.find_by!(username: params[:username],
                                password: params[:password])
 
-          cookies[:user_id] = {
+          cookies[:uid] = {
             value: user.id,
+            expires: Time.now + 1.day,
+            domain: 'localhost',
+            path: '/'
+          }
+          cookies[:username] = {
+            value: user.username,
             expires: Time.now + 1.day,
             domain: 'localhost',
             path: '/'
@@ -80,17 +86,13 @@ module PerformancePlus
             { code: 404, message: 'Not Found', model: PerformancePlus::Entities::ApiError }
           ]
         end
-        params do
-          # requires :user, type: Hash do
-          requires :username, type: String, desc: 'Check The Username Of User To Login'
-          requires :password, type: String, desc: 'Check The Password Of User To Login'
-          # end
-        end
+        # params do
+        #   requires :username, type: String, desc: 'Check The Username Of User To Login'
+        #   requires :password, type: String, desc: 'Check The Password Of User To Login'
+        # end
         post '/logout' do
-          user = User.find_by!(username: params[:username],
-                               password: params[:password])
-
-          cookies.delete :user, path: '/'
+          cookies.delete :uid
+          cookies.delete :username
         end
       end # end of return a specific user
     end

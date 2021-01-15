@@ -14,7 +14,9 @@ class ObjectiveNew extends React.Component {
       ended_on: "",
       kr_name: "",
       kr_description: "",
-      kr_manage_style: ""
+      kr_manage_style: "",
+      username1: "",
+      username2: ""
     }
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleValueChange = this.handleValueChange.bind(this)
@@ -33,14 +35,21 @@ class ObjectiveNew extends React.Component {
   }
 
   createObjective() {
-    const { objective_name, objective_description, started_on, ended_on } = this.state;
+    const { objective_name, objective_description, started_on, ended_on, kr_name, kr_description, kr_manage_style, username1, username2 } = this.state;
     const data = {
       objective: {
         objective_name,
         objective_description,
         started_on,
         ended_on
-      }
+      },
+      key_result: {
+        kr_name,
+        kr_description,
+        kr_manage_style
+      },
+      username1,
+      username2
     }
 
     axios({
@@ -48,6 +57,7 @@ class ObjectiveNew extends React.Component {
       headers: { 'content-type': 'application/json' },
       data: data,
       url: objective_api_uri,
+      withCredentials: true
     })
     .then((response) => {
       console.log("됐나")
@@ -56,8 +66,14 @@ class ObjectiveNew extends React.Component {
         objective_name: response.data.objective_name,
         objective_description: response.data.objective_description,
         started_on: response.data.started_on,
-        ended_on: response.data.ended_on
+        ended_on: response.data.ended_on,
+        kr_name: response.data.kr_name,
+        kr_description: response.data.kr_description,
+        kr_manage_style: response.data.kr_manage_style,
+        username1: response.data.username1,
+        username2: response.data.username2
       })
+      alert('목표가 생성되었습니다')
     })
     .catch((error) => {
       console.log("안됐네")
@@ -74,9 +90,16 @@ class ObjectiveNew extends React.Component {
             목표설명 : <input type="text" name="objective_description"  value={this.state.objective_description} onChange={this.handleValueChange} /><br />
             목표 시작일 : <input type="date" name="started_on"  value={this.state.started_on} onChange={this.handleValueChange} /><br />
             목표 마감일 : <input type="date" name="ended_on"  value={this.state.ended_on} onChange={this.handleValueChange} /><br />
+          <h2>핵심 성과 생성하기</h2>
+            핵심성과명 : <input type="text" name="kr_name" value={this.state.kr_name} onChange={this.handleValueChange} /><br />
+            핵심성과설명 : <input type="text" name="kr_description"  value={this.state.kr_description} onChange={this.handleValueChange} /><br />
+            관리방식 : <input type="text" name="kr_manage_style"  value={this.state.kr_manage_style} onChange={this.handleValueChange} /><br />
+          <h2>관련 구성원</h2>
+            담당자 : <input type="text" name="username1" value={this.state.username1} onChange={this.handleValueChange} /><br />
+            관리자 : <input type="text" name="username2" value={this.state.username2} onChange={this.handleValueChange} /><br />
           <input type="submit" value="목표 생성하기"></input>
         </form>
-        <Link to="/objectives">목표 목록</Link>
+        <Link to="/">목표 목록</Link>
       </div>
     );
   };

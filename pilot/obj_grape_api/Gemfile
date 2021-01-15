@@ -24,6 +24,7 @@ gem 'grape-swagger-entity'
 gem 'grape-swagger-representable'
 
 gem 'rack-cors'
+gem 'rails-erd'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'

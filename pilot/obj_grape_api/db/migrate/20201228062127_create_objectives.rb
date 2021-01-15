@@ -5,7 +5,7 @@ class CreateObjectives < ActiveRecord::Migration[5.2]
       t.text :objective_description
       t.date :started_on
       t.date :ended_on
-      t.string :objective_status, default: 'default'
+      t.integer 'objective_status', default: 0, null: false
       t.integer :objective_achievement, default: 0
 
       t.timestamps

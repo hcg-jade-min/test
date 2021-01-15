@@ -11,6 +11,7 @@ class UserLogin extends React.Component {
     this.state = {
       username: "",
       password: "",
+      isLogin: null
     }
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleValueChange = this.handleValueChange.bind(this)
@@ -44,12 +45,16 @@ class UserLogin extends React.Component {
     })
     .then((response) => {
       console.log("response.data", response.data)
+      let isLogin = Cookies.get('uid');
+      if (isLogin !== null) {
+        isLogin = true
+      };
       this.setState({
         username: response.data.username,
         password: response.data.password,
+        isLogin: isLogin
       })
       alert("로그인 성공!")
-      console.log('Cookies.get("user_id")', Cookies.get("user_id"))
     })
     .catch((error) => {
       alert("로그인 실패: 아이디 혹은 비밀번호를 다시 확인해주세요")
@@ -66,7 +71,8 @@ class UserLogin extends React.Component {
             PW : <input type="password" name="password" value={this.state.password} onChange={this.handleValueChange} /><br />
             <input type="submit" value="로그인" />
           </form>
-          <Link to="/users/signup">회원 가입하기</Link>
+          <Link to="/users/signup">회원 가입하기</Link><br />
+          <Link to="/">목표 목록으로</Link>
       </div>
     );
   };
